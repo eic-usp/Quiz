@@ -1,0 +1,24 @@
+﻿{
+  "questions": [
+    {
+      "question": "(42 + 16) * 3 = ?",
+      "correctOption": 2,
+      "options": [
+        "118",
+        "174",
+        "152",
+        "180"
+      ]
+    },
+    {
+      "question": "How many bones are there in the human body?",
+      "correctOption": 4,
+      "options": [
+        "140",
+        "39",
+        "321",
+        "206"
+      ]
+    }
+  ]
+}
