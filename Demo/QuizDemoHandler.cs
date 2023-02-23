@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using EIC.Quiz;
 
@@ -14,21 +15,35 @@ public class QuizDemoHandler : MonoBehaviour
     {
         quizManager.OnChooseRight += OnChooseRight;
         quizManager.OnChooseWrong += OnChooseWrong;
+        quizManager.OnComplete += OnComplete;
     }
 
     private void OnDisable()
     {
         quizManager.OnChooseRight -= OnChooseRight;
         quizManager.OnChooseWrong -= OnChooseWrong;
+        quizManager.OnComplete -= OnComplete;
     }
     
     private void OnChooseRight()
     {
-        Debug.Log("Right answer!");   
+        Debug.Log("Right answer!");
+        StartCoroutine(NextQuestion(1f));
     }
     
     private void OnChooseWrong()
     {
         Debug.Log("Wrong answer!");
+    }
+
+    private void OnComplete()
+    {
+        Debug.Log("The end!");
+    }
+
+    private IEnumerator NextQuestion(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        quizManager.PopQuestion();
     }
 }

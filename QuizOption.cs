@@ -10,23 +10,33 @@ namespace EIC.Quiz
     {
         public bool Correct { get; set; }
         public string Answer { get; private set; }
+        // public Image Image {
+        //     get
+        //     {
+        //         _image ??= GetComponent<Image>();
+        //         return _image;
+        //     }
+        //     private set => _image = value;
+        // }
+        public Image Image { get; private set; }
 
         private TextMeshProUGUI _text;
         private Button _button;
-        private Image _image;
+        private Color _defaultColor;
         private QuizManager _quizManager;
 
         private void Awake()
         {
             _button = GetComponent<Button>();
-            _image = GetComponent<Image>();
+            Image = GetComponent<Image>();
+            _defaultColor = Image.color;
             _quizManager = GetComponentInParent<QuizManager>();
             _button.onClick.AddListener(Choose);
         }
 
         public void SetAnswer(string answer)
         {
-            _text = GetComponentInChildren<TextMeshProUGUI>();
+            _text ??= GetComponentInChildren<TextMeshProUGUI>();
 
             if (!_text)
             {
@@ -36,12 +46,15 @@ namespace EIC.Quiz
 
             Answer = answer;
             _text.text = Answer;
+            Reset();
         }
 
-        private void Choose()
+        public void Reset()
         {
-            _image.color = _quizManager.Choose(Correct);
-            _button.interactable = false;
+            Image.color = _defaultColor;
+            _button.interactable = true;
         }
+        
+        private void Choose() => _quizManager.Choose(this);
     }
 }

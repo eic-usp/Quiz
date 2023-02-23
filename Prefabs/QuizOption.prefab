@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 7656083866273241581}
   - component: {fileID: 7656083866273241582}
   m_Layer: 5
-  m_Name: ButtonOption
+  m_Name: QuizOption
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
