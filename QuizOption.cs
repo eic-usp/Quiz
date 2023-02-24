@@ -10,14 +10,6 @@ namespace EIC.Quiz
     {
         public bool Correct { get; set; }
         public string Answer { get; private set; }
-        // public Image Image {
-        //     get
-        //     {
-        //         _image ??= GetComponent<Image>();
-        //         return _image;
-        //     }
-        //     private set => _image = value;
-        // }
         public Image Image { get; private set; }
 
         private TextMeshProUGUI _text;
@@ -30,17 +22,16 @@ namespace EIC.Quiz
             _button = GetComponent<Button>();
             Image = GetComponent<Image>();
             _defaultColor = Image.color;
+            _text = GetComponentInChildren<TextMeshProUGUI>();
             _quizManager = GetComponentInParent<QuizManager>();
             _button.onClick.AddListener(Choose);
         }
 
         public void SetAnswer(string answer)
         {
-            _text ??= GetComponentInChildren<TextMeshProUGUI>();
-
             if (!_text)
             {
-                Debug.LogError("Quiz option requires a Text Mesh Pro component");
+                Debug.LogError("Quiz option requires a Text Mesh Pro component as a child");
                 return;
             }
 
@@ -53,6 +44,7 @@ namespace EIC.Quiz
         {
             Image.color = _defaultColor;
             _button.interactable = true;
+            Correct = false;
         }
         
         private void Choose() => _quizManager.Choose(this);

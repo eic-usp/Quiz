@@ -11,6 +11,9 @@ public class QuizDemoHandler : MonoBehaviour
 {
     [SerializeField] private QuizManager quizManager;
 
+    private int _rightAnswerCount;
+    private int _wrongAnswerCount;
+
     private void OnEnable()
     {
         quizManager.OnChooseRight += OnChooseRight;
@@ -27,18 +30,22 @@ public class QuizDemoHandler : MonoBehaviour
     
     private void OnChooseRight()
     {
-        Debug.Log("Right answer!");
+        // Debug.Log("Right answer!");
+        _rightAnswerCount++;
         StartCoroutine(NextQuestion(1f));
     }
     
     private void OnChooseWrong()
     {
-        Debug.Log("Wrong answer!");
+        // Debug.Log("Wrong answer!");
+        _wrongAnswerCount++;
+        StartCoroutine(NextQuestion(1f));
     }
 
     private void OnComplete()
     {
         Debug.Log("The end!");
+        Debug.Log($"Right answers: {_rightAnswerCount} | Wrong answers: {_wrongAnswerCount}");
     }
 
     private IEnumerator NextQuestion(float seconds)

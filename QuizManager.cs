@@ -17,6 +17,8 @@ namespace EIC.Quiz
         public event System.Action OnChooseRight;
         public event System.Action OnChooseWrong;
         public event System.Action OnComplete;
+
+        public int QuestionStackCount => _quizDataItems.Count;
         
         private CanvasGroup _canvasGroup;
         private QuizOption[] _options;
@@ -26,6 +28,7 @@ namespace EIC.Quiz
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
+            _options = GetComponentsInChildren<QuizOption>();
             if (string.IsNullOrEmpty(questionsFilePath)) return;
             Setup(questionsFilePath);
         }
@@ -36,18 +39,18 @@ namespace EIC.Quiz
             SetQuestion(qd);
         }
 
-        public QuizDataItem[] LoadResourceFromJson(string resourcePath)
+        private static QuizDataItem[] LoadResourceFromJson(string resourcePath)
         {
             var json = Resources.Load<TextAsset>(resourcePath);
             return JsonUtility.FromJson<QuizData>(json.text).questions;
         }
 
-        public void SetQuestion(QuizDataItem[] quizDataItems)
+        private void SetQuestion(IList<QuizDataItem> quizDataItems)
         {
             _quizDataItems = new Stack<QuizDataItem>();
             
             var rng = new System.Random();
-            var n = quizDataItems.Length;
+            var n = quizDataItems.Count;
             
             while (n > 1) 
             {
@@ -71,6 +74,12 @@ namespace EIC.Quiz
                 return;
             }
 
+            if (_quizDataItems.Count == 0)
+            {
+                Debug.LogWarning("Question stack is empty");
+                return;
+            }
+            
             var temp = _currentQuizDataItem;
             SetQuestion(_quizDataItems.ToArray());
             _quizDataItems.Push(temp);
@@ -83,15 +92,15 @@ namespace EIC.Quiz
                 Debug.LogError("Questions are not set");
                 return;
             }
-            
-            if (!_quizDataItems.TryPop(out _currentQuizDataItem))
+
+            if (_quizDataItems.Count == 0)
             {
                 OnComplete?.Invoke();
                 return;
             }
-
-            _options ??= GetComponentsInChildren<QuizOption>();
             
+            _currentQuizDataItem = _quizDataItems.Pop();
+
             if (_currentQuizDataItem.options.Length != _options.Length)
             {
                 Debug.LogError("The number of quiz option buttons must be the same as the number of options in the resource file");
@@ -121,9 +130,10 @@ namespace EIC.Quiz
 
         public void Choose(QuizOption quizOption)
         {
+            _canvasGroup.interactable = false;
+            
             if (quizOption.Correct)
             {
-                _canvasGroup.interactable = false;
                 quizOption.Image.color = rightAnswerColor;
                 OnChooseRight?.Invoke();
                 return;
