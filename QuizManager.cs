@@ -13,6 +13,8 @@ namespace EIC.Quiz
         [SerializeField] private Color wrongAnswerColor;
         [Tooltip("From Resources folder. Leave empty to setup manually")]
         [SerializeField] private string questionsFilePath;
+        [Tooltip("Allow multiple failed attempts for each question")]
+        [field: SerializeField] public bool MultipleAttempts { get; set; }
 
         public event System.Action<bool, QuizResult> OnChoose;
 
@@ -78,11 +80,14 @@ namespace EIC.Quiz
                 Debug.LogWarning("Question stack is empty");
                 return;
             }
+
+            var tempQdi = _currentQuizDataItem;
+            var tempResult = _quizResult;
             
-            var temp = _currentQuizDataItem;
             SetQuestion(_quizDataItems.ToArray());
+            _quizResult = tempResult;
             PopQuestion();
-            _quizDataItems.Push(temp);
+            _quizDataItems.Push(tempQdi);
         }
 
         public void PopQuestion()
@@ -131,12 +136,13 @@ namespace EIC.Quiz
         public void Choose(QuizOption quizOption)
         {
             _quizResult.complete = _quizDataItems.Count == 0;
-            _canvasGroup.interactable = false;
+            _canvasGroup.interactable = MultipleAttempts;
             
             if (quizOption.Correct)
             {
                 quizOption.Image.color = rightAnswerColor;
                 _quizResult.rightAnswers++;
+                _canvasGroup.interactable = false;
             }
             else
             {
