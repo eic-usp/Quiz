@@ -14,9 +14,7 @@ namespace EIC.Quiz
         [Tooltip("From Resources folder. Leave empty to setup manually")]
         [SerializeField] private string questionsFilePath;
 
-        public event System.Action OnChooseRight;
-        public event System.Action OnChooseWrong;
-        public event System.Action OnComplete;
+        public event System.Action<bool, QuizResult> OnChoose;
 
         public int QuestionStackCount => _quizDataItems.Count;
         
@@ -24,6 +22,7 @@ namespace EIC.Quiz
         private QuizOption[] _options;
         private Stack<QuizDataItem> _quizDataItems;
         private QuizDataItem _currentQuizDataItem;
+        private QuizResult _quizResult;
 
         private void Awake()
         {
@@ -37,6 +36,7 @@ namespace EIC.Quiz
         {
             var qd = LoadResourceFromJson(resourcePath);
             SetQuestion(qd);
+            PopQuestion();
         }
 
         private static QuizDataItem[] LoadResourceFromJson(string resourcePath)
@@ -48,6 +48,7 @@ namespace EIC.Quiz
         private void SetQuestion(IList<QuizDataItem> quizDataItems)
         {
             _quizDataItems = new Stack<QuizDataItem>();
+            _quizResult = default;
             
             var rng = new System.Random();
             var n = quizDataItems.Count;
@@ -62,8 +63,6 @@ namespace EIC.Quiz
             {
                 _quizDataItems.Push(qdi);
             }
-
-            PopQuestion();
         }
 
         public void RefreshQuestion()
@@ -82,6 +81,7 @@ namespace EIC.Quiz
             
             var temp = _currentQuizDataItem;
             SetQuestion(_quizDataItems.ToArray());
+            PopQuestion();
             _quizDataItems.Push(temp);
         }
 
@@ -95,7 +95,7 @@ namespace EIC.Quiz
 
             if (_quizDataItems.Count == 0)
             {
-                OnComplete?.Invoke();
+                Debug.LogWarning("Question stack is empty");
                 return;
             }
             
@@ -130,17 +130,21 @@ namespace EIC.Quiz
 
         public void Choose(QuizOption quizOption)
         {
+            _quizResult.complete = _quizDataItems.Count == 0;
             _canvasGroup.interactable = false;
             
             if (quizOption.Correct)
             {
                 quizOption.Image.color = rightAnswerColor;
-                OnChooseRight?.Invoke();
-                return;
+                _quizResult.rightAnswers++;
+            }
+            else
+            {
+                quizOption.Image.color = wrongAnswerColor;
+                _quizResult.wrongAnswers++;
             }
             
-            quizOption.Image.color = wrongAnswerColor;
-            OnChooseWrong?.Invoke();
+            OnChoose?.Invoke(quizOption.Correct, _quizResult);
         }
     }
 }

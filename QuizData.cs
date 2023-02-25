@@ -13,4 +13,12 @@
         public string[] options;
         public int correctOption;
     }
+
+    [System.Serializable]
+    public struct QuizResult
+    {
+        public int rightAnswers;
+        public int wrongAnswers;
+        public bool complete;
+    }
 }

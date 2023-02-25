@@ -11,41 +11,28 @@ public class QuizDemoHandler : MonoBehaviour
 {
     [SerializeField] private QuizManager quizManager;
 
-    private int _rightAnswerCount;
-    private int _wrongAnswerCount;
-
     private void OnEnable()
     {
-        quizManager.OnChooseRight += OnChooseRight;
-        quizManager.OnChooseWrong += OnChooseWrong;
-        quizManager.OnComplete += OnComplete;
+        quizManager.OnChoose += OnChoose;
     }
 
     private void OnDisable()
     {
-        quizManager.OnChooseRight -= OnChooseRight;
-        quizManager.OnChooseWrong -= OnChooseWrong;
-        quizManager.OnComplete -= OnComplete;
-    }
-    
-    private void OnChooseRight()
-    {
-        // Debug.Log("Right answer!");
-        _rightAnswerCount++;
-        StartCoroutine(NextQuestion(1f));
-    }
-    
-    private void OnChooseWrong()
-    {
-        // Debug.Log("Wrong answer!");
-        _wrongAnswerCount++;
-        StartCoroutine(NextQuestion(1f));
+        quizManager.OnChoose -= OnChoose;
     }
 
-    private void OnComplete()
+    private void OnChoose(bool correct, QuizResult quizResult)
     {
-        Debug.Log("The end!");
-        Debug.Log($"Right answers: {_rightAnswerCount} | Wrong answers: {_wrongAnswerCount}");
+        Debug.Log($"{(correct ? "Right" : "Wrong")} answer!");
+        
+        if (quizResult.complete)
+        {
+            Debug.Log("The end!");
+            Debug.Log($"Right answers: {quizResult.rightAnswers} | Wrong answers: {quizResult.wrongAnswers}");
+            return;
+        }
+        
+        StartCoroutine(NextQuestion(1f));
     }
 
     private IEnumerator NextQuestion(float seconds)
