@@ -7,7 +7,7 @@
     }
 
     [System.Serializable]
-    public struct QuizDataItem
+    public class QuizDataItem
     {
         public string question;
         public string[] options;

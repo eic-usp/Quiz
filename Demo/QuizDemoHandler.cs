@@ -11,6 +11,11 @@ public class QuizDemoHandler : MonoBehaviour
 {
     [SerializeField] private QuizManager quizManager;
 
+    private void Start()
+    {
+        StartCoroutine(NextQuestion(0f));
+    }
+    
     private void OnEnable()
     {
         quizManager.OnChoose += OnChoose;
@@ -38,6 +43,7 @@ public class QuizDemoHandler : MonoBehaviour
     private IEnumerator NextQuestion(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        quizManager.PopQuestion();
+        var qdi = quizManager.PopQuestion();
+        Debug.Log($"Question: {qdi.question}");
     }
 }
