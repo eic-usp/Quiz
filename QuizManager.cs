@@ -11,8 +11,14 @@ namespace EIC.Quiz
         [SerializeField] private TextMeshProUGUI questionText;
         [SerializeField] private Color rightAnswerColor;
         [SerializeField] private Color wrongAnswerColor;
+        
         [Tooltip("From Resources folder. Leave empty to setup manually")]
         [SerializeField] private string questionsFilePath;
+        
+        [Tooltip("Number of questions to be picked")]
+        [Min(0)]
+        [SerializeField] private int numberOfQuestions;
+        
         [Tooltip("Allow multiple failed attempts for each question")]
         [field: SerializeField] public bool MultipleAttempts { get; set; }
 
@@ -31,13 +37,13 @@ namespace EIC.Quiz
             _canvasGroup = GetComponent<CanvasGroup>();
             _options = GetComponentsInChildren<QuizOption>();
             if (string.IsNullOrEmpty(questionsFilePath)) return;
-            Setup(questionsFilePath);
+            Setup(questionsFilePath, numberOfQuestions);
         }
 
-        public void Setup(string resourcePath)
+        public void Setup(string resourcePath, int nQuestions = 0)
         {
             var qd = LoadResourceFromJson(resourcePath);
-            SetQuestion(qd);
+            SetQuestion(qd, nQuestions);
             PopQuestion();
         }
 
@@ -47,7 +53,7 @@ namespace EIC.Quiz
             return JsonUtility.FromJson<QuizData>(json.text).questions;
         }
 
-        private void SetQuestion(IList<QuizDataItem> quizDataItems)
+        private void SetQuestion(IList<QuizDataItem> quizDataItems, int nQuestions = 0)
         {
             _quizDataItems = new Stack<QuizDataItem>();
             _quizResult = default;
@@ -61,9 +67,11 @@ namespace EIC.Quiz
                 (quizDataItems[n], quizDataItems[k]) = (quizDataItems[k], quizDataItems[n]);
             }
 
-            foreach (var qdi in quizDataItems)
+            var nQ = nQuestions > 0 && nQuestions < quizDataItems.Count ? nQuestions : quizDataItems.Count; 
+            
+            for (var i = 0; i < nQ; i++)
             {
-                _quizDataItems.Push(qdi);
+                _quizDataItems.Push(quizDataItems[i]);
             }
         }
 
@@ -135,6 +143,12 @@ namespace EIC.Quiz
 
         public void Choose(QuizOption quizOption)
         {
+            if (_quizDataItems == null)
+            {
+                Debug.LogError("Questions are not set");
+                return;
+            }
+
             _quizResult.complete = _quizDataItems.Count == 0;
             _canvasGroup.interactable = MultipleAttempts;
             
