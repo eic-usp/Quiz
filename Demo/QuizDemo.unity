@@ -516,6 +516,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6557558978162703382, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1065773964}
+    - target: {fileID: 6735463527617985488, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735463527617985488, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735463527617985488, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735463527617985488, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6893491009819220024, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -587,6 +607,22 @@ PrefabInstance:
     - target: {fileID: 7245586157039490345, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
       propertyPath: questionsFilePath
       value: QuizSampleQuestions
+      objectReference: {fileID: 0}
+    - target: {fileID: 7245586157039490346, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7245586157039490346, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7245586157039490346, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7245586157039490346, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7245586158615642404, guid: 19cd21dc0fda9e549820f028f2028dda, type: 3}
       propertyPath: m_Name

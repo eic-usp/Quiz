@@ -4,7 +4,6 @@ using EIC.Quiz;
 
 /// <summary>
 /// Quiz demo class
-/// Subscribe to these events
 /// </summary>
 
 public class QuizDemoHandler : MonoBehaviour
@@ -45,5 +44,10 @@ public class QuizDemoHandler : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         var qdi = quizManager.PopQuestion();
         Debug.Log($"Question: {qdi.question}");
+    }
+
+    public void RefreshQuestion()
+    {
+        quizManager.RefreshQuestion();
     }
 }

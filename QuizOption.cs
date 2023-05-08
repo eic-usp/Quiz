@@ -27,6 +27,11 @@ namespace EIC.Quiz
             _button.onClick.AddListener(Choose);
         }
 
+        /// <summary>
+        /// Set option text
+        /// </summary>
+        /// <param name="answer"></param>
+        
         public void SetAnswer(string answer)
         {
             if (!_text)
@@ -40,6 +45,10 @@ namespace EIC.Quiz
             Reset();
         }
 
+        /// <summary>
+        /// Reset option default properties
+        /// </summary>
+        
         public void Reset()
         {
             Image.color = _defaultColor;
@@ -47,6 +56,10 @@ namespace EIC.Quiz
             Correct = false;
         }
         
-        private void Choose() => _quizManager.Choose(this);
+        /// <summary>
+        /// Choose quiz option
+        /// </summary>
+        
+        public void Choose() => _quizManager.Choose(this);
     }
 }
