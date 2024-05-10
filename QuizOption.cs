@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 namespace EIC.Quiz
@@ -13,6 +14,7 @@ namespace EIC.Quiz
         public Image Image { get; private set; }
 
         private TextMeshProUGUI _text;
+
         private Button _button;
         private Color _defaultColor;
         private QuizManager _quizManager;
@@ -41,7 +43,8 @@ namespace EIC.Quiz
             }
 
             Answer = answer;
-            _text.text = Answer;
+            //_text.text = Answer;
+            LocalizationManager.SetStringReference(_text.GetComponent<LocalizeStringEvent>(), LocalizationManager.Quiz, Answer);
             Reset();
         }
 

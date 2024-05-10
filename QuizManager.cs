@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 
 namespace EIC.Quiz
 {
@@ -161,9 +162,9 @@ namespace EIC.Quiz
                 Debug.LogError("The number of quiz option buttons must be the same as the number of options in the resource file");
                 return null;
             }
-
-            questionText.text = _currentQuizDataItem.question; // Set question text
             
+            LocalizationManager.SetStringReference(questionText.GetComponent<LocalizeStringEvent>(), LocalizationManager.Quiz, _currentQuizDataItem.question);
+
             // Set the text for each option
             
             for (var i = 0; i < _options.Length; i++)
